@@ -13,18 +13,17 @@ except Exception as e:
 app = FastAPI()
 
 class PredictionRequest(BaseModel):
-    feature: float
+    inputData: float # you should change this to your input data type
 
 @app.post("/predict/")
 def predict(request: PredictionRequest):
     try:
-        feature = np.array([[request.feature]])
-        prediction = model.predict(feature)
+        input_data= np.array([[request.inputData]])
+        prediction = model.predict(input_data)
         return {"prediction": prediction[0]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
-# Root endpoint
 @app.get("/")
 def read_root():
     return {"message": "FastAPI server is running and ready to predict!"}
